@@ -28,4 +28,15 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+test {
+	useJUnitPlatform()
+}
 
+//tasks.named('test'){
+//	useJUnitPlatform()
+//}
+
+// plain 파일 생성하지 않는 설정
+jar{
+	enabled = false
+}

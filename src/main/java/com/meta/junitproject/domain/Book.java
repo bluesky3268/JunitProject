@@ -5,9 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -15,12 +13,14 @@ import javax.persistence.Id;
 public class Book {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // strategy : IDENTITY -> Id가 1씩 자동증가함
     private Long id;
 
-    @Column(length = 50, nullable = true)
+    @Column(length = 50, nullable = false)
     private String title;
 
-    @Column(length = 20, nullable = true)
+    @Column(length = 20, nullable = false)
     private String author;
 
     @Builder
