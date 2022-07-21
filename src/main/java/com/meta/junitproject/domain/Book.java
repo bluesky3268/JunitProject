@@ -15,7 +15,7 @@ import javax.persistence.Id;
 public class Book {
 
     @Id
-    private long id;
+    private Long id;
 
     @Column(length = 50, nullable = true)
     private String title;
@@ -24,7 +24,7 @@ public class Book {
     private String author;
 
     @Builder
-    public Book(long id, String title, String author) {
+    public Book(Long id, String title, String author) {
         this.id = id;
         this.title = title;
         this.author = author;
