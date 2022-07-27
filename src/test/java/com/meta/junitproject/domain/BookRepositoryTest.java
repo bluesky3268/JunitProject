@@ -1,13 +1,17 @@
 package com.meta.junitproject.domain;
 
 import com.meta.junitproject.dto.BookSaveReqDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +69,7 @@ public class BookRepositoryTest {
     }
 
     // 단건 조회 테스트
+    @Sql("classpath:testdb/bookTableReset.sql")
     @Test
     public void 단건조회테스트() {
         // given
@@ -97,7 +102,7 @@ public class BookRepositoryTest {
         String author3 = "hyunbenny3";
 
         // when
-        List<Book> books = bookRepository.findAll();;
+        List<Book> books = bookRepository.findAll();
 
         //then
         assertThat(3).isEqualTo(books.size());
@@ -117,8 +122,16 @@ public class BookRepositoryTest {
     // 수정 테스트
 
     // 삭제 테스트
+    @Sql("classpath:testdb/bookTableReset.sql")
     @Test
     public void 삭제테스트() {
+        /**
+         * PK의 auto_increment값은 초기화가 안됨
+         * -> @Transcational 은 모든 ROW를 삭제하여 truncate와 같은 효과를 볼 수 있지만 (테이블에 대해 롤백 작업)
+         * auto-increment에 대한 롤백은 되지 않음
+         * 그래서 @Sql()을 이용하여 테이블을 drop했다가 다시 create하는 방법을 사용함
+         * -> id를 사용하는 로직의 테스트에는 붙여서 사용하는 것이 좋음
+         */
         //given
         Long id = 1L;
 
@@ -127,8 +140,8 @@ public class BookRepositoryTest {
 
         //then
         Optional<Book> bookPs = bookRepository.findById(id);
-            // Optional은 null이 될 수도 있고 값을 가지고 있을 수도 있음(값이 바로 null을 가지는 것을 방지하기 위해 Optional을 사용)
-            // bookPs.isPresent() : null이 아닐 경우 true 리턴
+        // Optional은 null이 될 수도 있고 값을 가지고 있을 수도 있음(값이 바로 null을 가지는 것을 방지하기 위해 Optional을 사용)
+        // bookPs.isPresent() : null이 아닐 경우 true 리턴
         assertFalse(bookPs.isPresent());
         assertTrue(bookPs.isEmpty());
 
