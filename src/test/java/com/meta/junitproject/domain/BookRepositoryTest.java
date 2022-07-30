@@ -120,6 +120,29 @@ public class BookRepositoryTest {
     }
 
     // 수정 테스트
+    @Sql("classpath:testdb/bookTableReset.sql")
+    @Test
+    public void 수정테스트() {
+        // 수정할 때는 더티체킹에 주의해야함
+        //given
+        Long id = 1L;
+        String title = "JUnit5_수정";
+        String author = "hyunbenny_수정";
+
+        //when
+        Book editBook = Book.builder()
+                .id(id)
+                .title(title)
+                .author(author)
+                .build();
+
+        Book bookPs = bookRepository.save(editBook);// id = 1이 있으면 업데이트가 됨
+
+        //then
+        assertEquals(id, bookPs.getId());
+        assertEquals(title, bookPs.getTitle());
+        assertEquals(author, bookPs.getAuthor());
+    }
 
     // 삭제 테스트
     @Sql("classpath:testdb/bookTableReset.sql")
