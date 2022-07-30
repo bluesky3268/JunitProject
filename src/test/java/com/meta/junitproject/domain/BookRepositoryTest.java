@@ -123,7 +123,6 @@ public class BookRepositoryTest {
     @Sql("classpath:testdb/bookTableReset.sql")
     @Test
     public void 수정테스트() {
-        // 수정할 때는 더티체킹에 주의해야함
         //given
         Long id = 1L;
         String title = "JUnit5_수정";
@@ -136,7 +135,7 @@ public class BookRepositoryTest {
                 .author(author)
                 .build();
 
-        Book bookPs = bookRepository.save(editBook);// id = 1이 있으면 업데이트가 됨
+        Book bookPs = bookRepository.save(editBook);// id = 1이 있으면 업데이트가 됨 -> JPA의 더티체킹
 
         //then
         assertEquals(id, bookPs.getId());
