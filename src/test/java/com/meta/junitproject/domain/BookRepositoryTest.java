@@ -20,6 +20,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @DataJpaTest // -> DB와 관련된 컴포넌트만 메모리에 로딩 됨
+/**
+ * @Rollback : 해당 메서드에 @Rollback(false) 를 선언해주지 않는 이상 기본값으로 메서드 실행 후 롤백 수행
+ */
 public class BookRepositoryTest {
 
     @Autowired
