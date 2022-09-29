@@ -18,4 +18,13 @@ public class BookRespDto {
         this.author = book.getAuthor();
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "BookRespDto{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                '}';
+    }
 }
