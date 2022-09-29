@@ -32,17 +32,17 @@ public class BookRepositoryTest {
     public void 필요데이터삽입() {
         Book bookA = Book.builder()
                 .title("JUnit4")
-                .author("hyunbenny1")
+                .author("hyunbin4")
                 .build();
 
         Book bookB = Book.builder()
                 .title("JUnit5")
-                .author("hyunbenny2")
+                .author("hyunbin5")
                 .build();
 
         Book bookC = Book.builder()
                 .title("JUnit6")
-                .author("hyunbenny3")
+                .author("hyunbin6")
                 .build();
 
         bookRepository.save(bookA);
@@ -55,7 +55,7 @@ public class BookRepositoryTest {
     public void 등록테스트() {
         // given
         String title = "JUnit5";
-        String author = "hyunbenny";
+        String author = "hyunbin";
         Book book = Book.builder()
                 .title(title)
                 .author(author)
@@ -77,7 +77,7 @@ public class BookRepositoryTest {
     public void 단건조회테스트() {
         // given
         String title = "JUnit4";
-        String author = "hyunbenny1";
+        String author = "hyunbin4";
 
         // when
         Book findBookA = bookRepository.findById(1L).get();
@@ -96,13 +96,13 @@ public class BookRepositoryTest {
     public void 목록조회테스트() {
         //given
         String title1 = "JUnit4";
-        String author1 = "hyunbenny1";
+        String author1 = "hyunbin4";
 
         String title2 = "JUnit5";
-        String author2 = "hyunbenny2";
+        String author2 = "hyunbin5";
 
         String title3 = "JUnit6";
-        String author3 = "hyunbenny3";
+        String author3 = "hyunbin6";
 
         // when
         List<Book> books = bookRepository.findAll();
@@ -111,7 +111,7 @@ public class BookRepositoryTest {
         assertThat(3).isEqualTo(books.size());
 
         assertThat(books.get(0).getTitle()).isNotEqualTo("JUnit3");
-        assertThat(books.get(0).getAuthor()).isNotEqualTo("HYUNBENNY");
+        assertThat(books.get(0).getAuthor()).isNotEqualTo("hyunbin3");
 
         assertEquals(title1, books.get(0).getTitle());
         assertEquals(author1, books.get(0).getAuthor());
@@ -129,7 +129,7 @@ public class BookRepositoryTest {
         //given
         Long id = 1L;
         String title = "JUnit5_수정";
-        String author = "hyunbenny_수정";
+        String author = "hyunbin5_수정";
 
         //when
         Book editBook = Book.builder()

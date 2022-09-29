@@ -2,6 +2,7 @@ package com.meta.junitproject.domain;
 
 
 import com.meta.junitproject.dto.BookRespDto;
+import com.meta.junitproject.dto.BookSaveReqDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,11 @@ public class Book {
         this.id = id;
         this.title = title;
         this.author = author;
+    }
+
+    public void updateBook(BookSaveReqDto dto) {
+        this.title = dto.getTitle();
+        this.author = dto.getAuthor();
     }
 
     @Override
