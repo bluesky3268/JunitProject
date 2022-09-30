@@ -2,20 +2,17 @@ package com.meta.junitproject.service;
 
 import com.meta.junitproject.domain.Book;
 import com.meta.junitproject.domain.BookRepository;
-import com.meta.junitproject.dto.BookRespDto;
-import com.meta.junitproject.dto.BookSaveReqDto;
+import com.meta.junitproject.dto.response.BookRespDto;
+import com.meta.junitproject.dto.request.BookSaveReqDto;
 import com.meta.junitproject.util.MailSender;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.Optional.*;
 import static org.assertj.core.api.Assertions.*;
@@ -23,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.util.AssertionErrors.assertEquals;
 
 @ExtendWith(MockitoExtension.class) // 가짜 메모리 환경 생성
 public class BookServiceTest {

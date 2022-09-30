@@ -1,4 +1,4 @@
-package com.meta.junitproject.dto;
+package com.meta.junitproject.dto.request;
 
 import com.meta.junitproject.domain.Book;
 import lombok.AllArgsConstructor;

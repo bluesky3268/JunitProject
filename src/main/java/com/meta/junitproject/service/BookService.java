@@ -2,17 +2,15 @@ package com.meta.junitproject.service;
 
 import com.meta.junitproject.domain.Book;
 import com.meta.junitproject.domain.BookRepository;
-import com.meta.junitproject.dto.BookRespDto;
-import com.meta.junitproject.dto.BookSaveReqDto;
+import com.meta.junitproject.dto.response.BookRespDto;
+import com.meta.junitproject.dto.request.BookSaveReqDto;
 import com.meta.junitproject.util.MailSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -38,9 +36,10 @@ public class BookService {
 
     // 수정
     @Transactional(rollbackFor = RuntimeException.class)
-    public void updateBook(Long id, BookSaveReqDto dto) {
+    public BookRespDto updateBook(Long id, BookSaveReqDto dto) {
         Book findBook = bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 책이 존재하지 않습니다."));
         findBook.updateBook(dto);
+        return new BookRespDto().toBookRespDto(findBook);
     }
 
     // 삭제

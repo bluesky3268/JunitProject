@@ -1,7 +1,6 @@
-package com.meta.junitproject.dto;
+package com.meta.junitproject.dto.response;
 
 import com.meta.junitproject.domain.Book;
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter

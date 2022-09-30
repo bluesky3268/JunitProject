@@ -1,17 +1,12 @@
 package com.meta.junitproject.domain;
 
-import com.meta.junitproject.dto.BookSaveReqDto;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,8 +1,7 @@
 package com.meta.junitproject.domain;
 
 
-import com.meta.junitproject.dto.BookRespDto;
-import com.meta.junitproject.dto.BookSaveReqDto;
+import com.meta.junitproject.dto.request.BookSaveReqDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
