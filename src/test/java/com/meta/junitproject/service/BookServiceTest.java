@@ -11,14 +11,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Optional.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
@@ -60,6 +63,43 @@ public class BookServiceTest {
         // then
         assertThat(savedBook.getTitle()).isEqualTo(saveDto.getTitle());
         assertThat(savedBook.getAuthor()).isEqualTo(saveDto.getAuthor());
+
+    }
+
+    @Test
+    public void 책수정테스트() {
+        // given
+        Long id = 1L;
+        BookSaveReqDto dto = new BookSaveReqDto();
+        dto.setTitle("junit수정테스트");
+        dto.setAuthor("hyunbin수정테스트");
+
+        // stub
+        Book findBook = new Book(1L, "junit", "hyunbin");
+        when(bookRepository.findById(1L)).thenReturn(of(findBook));
+
+        // when
+        BookRespDto updatedBook = bookService.updateBook(1L, dto);
+
+        // then
+        assertThat(updatedBook.getTitle()).isEqualTo(dto.getTitle());
+        assertThat(updatedBook.getAuthor()).isEqualTo(dto.getAuthor());
+
+    }
+
+    @Test
+    public void 책삭제테스트() {
+        // given
+        Long id = 1L;
+        Book book = new Book(id, "junit", "hyunbin");
+        bookRepository.save(book);
+
+        // when
+        bookService.deleteBook(id);
+
+        // then
+        boolean empty = bookRepository.findById(book.getId()).isEmpty();
+        assertThat(empty).isTrue();
 
     }
 
@@ -126,4 +166,5 @@ public class BookServiceTest {
         assertThat(findBook.getTitle()).isEqualTo(book.getTitle());
         assertThat(findBook.getAuthor()).isEqualTo(book.getAuthor());
     }
+
 }
