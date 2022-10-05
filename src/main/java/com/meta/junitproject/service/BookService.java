@@ -2,6 +2,7 @@ package com.meta.junitproject.service;
 
 import com.meta.junitproject.domain.Book;
 import com.meta.junitproject.domain.BookRepository;
+import com.meta.junitproject.dto.response.BookListRespDto;
 import com.meta.junitproject.dto.response.BookRespDto;
 import com.meta.junitproject.dto.request.BookSaveReqDto;
 import com.meta.junitproject.util.MailSender;
@@ -50,8 +51,9 @@ public class BookService {
     }
 
     // 목록
-    public List<BookRespDto> getBookList() {
-         return bookRepository.findAll().stream().map((book) -> new BookRespDto().toBookRespDto(book)).collect(Collectors.toList());
+    public BookListRespDto getBookList() {
+        List<BookRespDto> findBooks = bookRepository.findAll().stream().map((book) -> new BookRespDto().toBookRespDto(book)).collect(Collectors.toList());
+        return new BookListRespDto().builder().bookList(findBooks).build();
     }
 
     // 단건 조회

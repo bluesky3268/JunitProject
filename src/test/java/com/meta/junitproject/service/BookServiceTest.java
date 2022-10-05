@@ -2,6 +2,7 @@ package com.meta.junitproject.service;
 
 import com.meta.junitproject.domain.Book;
 import com.meta.junitproject.domain.BookRepository;
+import com.meta.junitproject.dto.response.BookListRespDto;
 import com.meta.junitproject.dto.response.BookRespDto;
 import com.meta.junitproject.dto.request.BookSaveReqDto;
 import com.meta.junitproject.util.MailSender;
@@ -111,16 +112,17 @@ public class BookServiceTest {
         when(bookRepository.findAll()).thenReturn(books);
 
         // when
-        List<BookRespDto> findBookList = bookService.getBookList();
-        for (BookRespDto bookResp : findBookList) {
+        BookListRespDto findBookList = bookService.getBookList();
+        List<BookRespDto> bookList = findBookList.getItems();
+        for (BookRespDto bookResp : bookList) {
             System.out.println(bookResp.toString());
         }
 
         // then
-        assertThat(findBookList.get(0).getTitle()).isEqualTo(books.get(0).getTitle());
-        assertThat(findBookList.get(0).getAuthor()).isEqualTo(books.get(0).getAuthor());
-        assertThat(findBookList.get(1).getTitle()).isEqualTo(books.get(1).getTitle());
-        assertThat(findBookList.get(1).getAuthor()).isEqualTo(books.get(1).getAuthor());
+        assertThat(bookList.get(0).getTitle()).isEqualTo(books.get(0).getTitle());
+        assertThat(bookList.get(0).getAuthor()).isEqualTo(books.get(0).getAuthor());
+        assertThat(bookList.get(1).getTitle()).isEqualTo(books.get(1).getTitle());
+        assertThat(bookList.get(1).getAuthor()).isEqualTo(books.get(1).getAuthor());
     }
 
     @Test
