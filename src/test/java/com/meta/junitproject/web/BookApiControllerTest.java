@@ -225,6 +225,8 @@ public class BookApiControllerTest {
         // expected
         mockMvc.perform(get("/api/v1/book").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code", is(1)))
+                .andExpect(jsonPath("$.message", is("목록 조회 성공")))
                 .andExpect(jsonPath("$.body.items.length()", is(10)))
                 .andExpect(jsonPath("$.body.items[0].title", is("테스트1")))
                 .andExpect(jsonPath("$.body.items[0].author", is("tester1")))
