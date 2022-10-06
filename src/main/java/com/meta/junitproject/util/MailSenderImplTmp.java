@@ -2,7 +2,7 @@ package com.meta.junitproject.util;
 
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class MailSenderImplTmp implements MailSender{
 
     @Override

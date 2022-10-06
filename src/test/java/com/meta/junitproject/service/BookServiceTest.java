@@ -40,7 +40,6 @@ public class BookServiceTest {
     private MailSender mailSender;
 
 
-
     @Test
     public void 책등록테스트() {
 

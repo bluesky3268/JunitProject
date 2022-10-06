@@ -7,12 +7,14 @@ import com.meta.junitproject.dto.response.BookRespDto;
 import com.meta.junitproject.dto.request.BookSaveReqDto;
 import com.meta.junitproject.util.MailSender;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BookService {
@@ -28,8 +30,10 @@ public class BookService {
         // 등록시, 등록 알림 메일 발송
         if (book != null) {
             if (!mailSender.send()) {
+                log.info("[메일 발송 실패]");
                 throw new RuntimeException("메일 발송에 실패했습니다.");
             }
+            log.info("[메일 발송 성공]");
         }
 
         return new BookRespDto().toBookRespDto(book);

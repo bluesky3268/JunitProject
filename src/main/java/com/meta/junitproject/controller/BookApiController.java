@@ -23,7 +23,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-public class BookController {
+public class BookApiController {
 
     private final BookService bookService;
 

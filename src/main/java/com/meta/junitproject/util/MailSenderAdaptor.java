@@ -2,7 +2,7 @@ package com.meta.junitproject.util;
 
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class MailSenderAdaptor implements MailSender{
 
     private Mail mail;
@@ -14,6 +14,6 @@ public class MailSenderAdaptor implements MailSender{
     @Override
     public boolean send() {
 //        mail 클래스에서 메일을 보내는 메서드 호출
-        return true;
+        return mail.sendMail();
     }
 }
