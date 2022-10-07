@@ -23,6 +23,7 @@ import java.util.stream.IntStream;
 import static org.assertj.core.api.Assertions.assertThat;
 //import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -213,6 +214,52 @@ public class BookApiControllerTest {
 
     @Sql("classpath:testdb/bookTableReset.sql")
     @Test
+    public void 책삭제성공() throws Exception {
+        // given
+        List<Book> request = IntStream.range(1, 6)
+                .mapToObj(i -> Book.builder()
+                        .title("테스트" + i)
+                        .author("tester" + i)
+                        .build()).collect(Collectors.toList());
+        bookRepository.saveAll(request);
+
+        Integer id = 1;
+
+        // expected
+        mockMvc.perform(delete("/api/v1/book/" + id).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code", is(1)))
+                .andExpect(jsonPath("$.message", is("삭제 성공")))
+                .andExpect(jsonPath("$.body").isEmpty())
+                .andDo(print());
+
+    }
+
+    @Sql("classpath:testdb/bookTableReset.sql")
+    @Test
+    public void 책삭제실패_없는bookId전달() throws Exception {
+        // given
+        List<Book> request = IntStream.range(1, 6)
+                .mapToObj(i -> Book.builder()
+                        .title("테스트" + i)
+                        .author("tester" + i)
+                        .build()).collect(Collectors.toList());
+        bookRepository.saveAll(request);
+
+        Integer id = 10;
+
+        // expected
+        mockMvc.perform(delete("/api/v1/book/" + id).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code", is(2)))
+                .andExpect(jsonPath("$.message", is("해당 책이 존재하지 않습니다.")))
+                .andExpect(jsonPath("$.body").isEmpty())
+                .andDo(print());
+
+    }
+
+    @Sql("classpath:testdb/bookTableReset.sql")
+    @Test
     public void 책목록조회성공() throws Exception {
         // given
         List<Book> request = IntStream.range(1, 11)
@@ -232,6 +279,48 @@ public class BookApiControllerTest {
                 .andExpect(jsonPath("$.body.items[0].author", is("tester1")))
                 .andExpect(jsonPath("$.body.items[9].title", is("테스트10")))
                 .andExpect(jsonPath("$.body.items[9].author", is("tester10")))
+                .andDo(print());
+    }
+
+    @Sql("classpath:testdb/bookTableReset.sql")
+    @Test
+    public void 책단건조회성공() throws Exception {
+        // given
+        List<Book> request = IntStream.range(1, 11)
+                .mapToObj(i -> Book.builder()
+                        .title("테스트" + i)
+                        .author("tester" + i)
+                        .build()).collect(Collectors.toList());
+        bookRepository.saveAll(request);
+
+        // expected
+        mockMvc.perform(get("/api/v1/book/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code", is(1)))
+                .andExpect(jsonPath("$.message", is("단건 조회 성공")))
+                .andExpect(jsonPath("$.body.id", is(1)))
+                .andExpect(jsonPath("$.body.title", is("테스트1")))
+                .andExpect(jsonPath("$.body.author", is("tester1")))
+                .andDo(print());
+    }
+
+    @Sql("classpath:testdb/bookTableReset.sql")
+    @Test
+    public void 책단건조회_해당값없음() throws Exception {
+        // given
+        List<Book> request = IntStream.range(1, 11)
+                .mapToObj(i -> Book.builder()
+                        .title("테스트" + i)
+                        .author("tester" + i)
+                        .build()).collect(Collectors.toList());
+        bookRepository.saveAll(request);
+
+        // expected
+        mockMvc.perform(get("/api/v1/book/20"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code", is(2)))
+                .andExpect(jsonPath("$.message", is("해당 책이 존재하지 않습니다.")))
+                .andExpect(jsonPath("$.body").isEmpty())
                 .andDo(print());
     }
 }
