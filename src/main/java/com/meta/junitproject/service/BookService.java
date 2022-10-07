@@ -8,6 +8,7 @@ import com.meta.junitproject.dto.request.BookSaveReqDto;
 import com.meta.junitproject.util.MailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +52,11 @@ public class BookService {
     @Transactional(rollbackFor = RuntimeException.class)
     public void deleteBook(Long id) {
         // null체크는 컨트롤러에서..
-        bookRepository.deleteById(id);
+        try {
+            bookRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e) {
+            throw new IllegalArgumentException("해당 책이 존재하지 않습니다.");
+        }
     }
 
     // 목록
