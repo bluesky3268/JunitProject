@@ -1,5 +1,6 @@
 package com.meta.junitproject.web;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -23,8 +24,7 @@ import java.util.stream.IntStream;
 import static org.assertj.core.api.Assertions.assertThat;
 //import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -209,6 +209,38 @@ public class BookApiControllerTest {
         assertThat(statusCode).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(message).isEqualTo("{author=크기가 2에서 20 사이여야 합니다}");
         assertThat(respBody).isNull();
+
+    }
+
+    @Sql("classpath:testdb/bookTableReset.sql")
+    @Test
+    public void 책수정성공() throws Exception {
+        // given
+        //데이터 삽입
+        BookSaveReqDto bookSaveReqDto = new BookSaveReqDto();
+        bookSaveReqDto.setTitle("TEST1");
+        bookSaveReqDto.setAuthor("TESTER1");
+
+        bookRepository.save(bookSaveReqDto.toEntity());
+
+        // 수정할 데이터
+        BookSaveReqDto requestDto = new BookSaveReqDto();
+        requestDto.setTitle("TEST1_수정");
+        requestDto.setAuthor("TESTER1_수정");
+
+        String request = objectMapper.writeValueAsString(requestDto);
+
+        Integer id = 1;
+        // expected
+        mockMvc.perform(put("/api/v1/book/" + id)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(request))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code", is(1)))
+                .andExpect(jsonPath("$.message", is("수정 성공")))
+                .andExpect(jsonPath("$.body.title", is(requestDto.getTitle())))
+                .andExpect(jsonPath("$.body.author", is(requestDto.getAuthor())))
+                .andDo(print());
 
     }
 
